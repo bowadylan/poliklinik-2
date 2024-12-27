@@ -129,12 +129,13 @@ $conn->close();
 
                     <div class="mb-3">
                         <label for="id_poli" class="form-label">Poli</label>
-                        <select id="id_poli" name="id_poli" class="form-select" required>
+                        <select id="id_poli" name="id_poli" class="form-select" disabled>
                             <option value="">-- Pilih Poli --</option>
                             <?php while ($poli = $result_poli->fetch_assoc()): ?>
                                 <option value="<?= $poli['id']; ?>" <?= $dokter['id_poli'] == $poli['id'] ? 'selected' : ''; ?>><?= htmlspecialchars($poli['nama_poli']); ?></option>
                             <?php endwhile; ?>
                         </select>
+                        <input type="hidden" name="id_poli" value="<?= $dokter['id_poli']; ?>">
                     </div>
 
                     <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
