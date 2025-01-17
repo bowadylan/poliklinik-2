@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <section class="vh-100" style="background-color: #baf3d7;">
-        <div class="container py-5 h-100">
+        <div class="container py-3 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-xl-10">
                     <div class="card" style="border-radius: 1rem;">
