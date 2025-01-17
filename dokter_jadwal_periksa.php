@@ -2,7 +2,6 @@
 include 'config.php';
 session_start();
 
-
 if (!isset($_SESSION['id_dokter'])) {
     header("Location: login.php"); 
     exit;
@@ -25,36 +24,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $jam_selesai = $_POST['jam_selesai'];
         $status = $_POST['status'];
 
-        // Cek apakah dokter lain memiliki jadwal aktif
-        $cek_jadwal_aktif = "SELECT id FROM jadwal_periksa WHERE id_dokter = ? AND status = 'aktif' AND id != ?";
-        $stmt_cek = $conn->prepare($cek_jadwal_aktif);
-        $stmt_cek->bind_param("ii", $id_dokter, $_POST['id_jadwal']);
-        $stmt_cek->execute();
-        $result_cek = $stmt_cek->get_result();
+        // Cek apakah dokter sudah memiliki jadwal aktif
+        if ($status === 'aktif') {
+            $cek_aktif = "SELECT id FROM jadwal_periksa WHERE id_dokter = ? AND status = 'aktif'";
+            $stmt_cek_aktif = $conn->prepare($cek_aktif);
+            $stmt_cek_aktif->bind_param("i", $id_dokter);
+            $stmt_cek_aktif->execute();
+            $result_aktif = $stmt_cek_aktif->get_result();
 
-        if ($result_cek->num_rows > 0 && $status === 'aktif') {
-            echo "Hanya satu jadwal yang bisa memiliki status 'aktif'.";
-        } elseif (strtotime($jam_mulai) >= strtotime($jam_selesai)) {
-            echo "Jam mulai harus lebih awal daripada jam selesai.";
-        } else {
-            // Jika status bukan 'aktif', pastikan jadwal lain dengan status aktif dihapus atau diperbarui ke tidak aktif
-            if ($status !== 'aktif') {
-                $update_status_lain = "UPDATE jadwal_periksa SET status = 'tidak aktif' WHERE id_dokter = ? AND id != ?";
-                $stmt_update = $conn->prepare($update_status_lain);
-                $stmt_update->bind_param("ii", $id_dokter, $_POST['id_jadwal']);
-                $stmt_update->execute();
+            if ($result_aktif->num_rows > 0) {
+                echo "<script>alert('Dokter hanya bisa memiliki satu jadwal aktif.');</script>";
+                echo "<script>window.location.href='dokter_jadwal_periksa.php';</script>";
+                exit;
             }
-            
+        }
+
+        // Cek apakah hari sudah digunakan oleh dokter
+        $cek_hari = "SELECT id FROM jadwal_periksa WHERE id_dokter = ? AND hari = ?";
+        $stmt_cek_hari = $conn->prepare($cek_hari);
+        $stmt_cek_hari->bind_param("is", $id_dokter, $hari);
+        $stmt_cek_hari->execute();
+        $result_hari = $stmt_cek_hari->get_result();
+
+        if ($result_hari->num_rows > 0) {
+            echo "<script>alert('Dokter sudah memiliki jadwal di hari tersebut.');</script>";
+        } elseif (strtotime($jam_mulai) >= strtotime($jam_selesai)) {
+            echo "<script>alert('Jam mulai harus lebih awal daripada jam selesai.');</script>";
+        } else {
             $sql = "INSERT INTO jadwal_periksa (id_dokter, hari, jam_mulai, jam_selesai, status) VALUES (?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("issss", $id_dokter, $hari, $jam_mulai, $jam_selesai, $status);
 
             if ($stmt->execute()) {
-                echo "Jadwal berhasil ditambahkan.";
+                echo "<script>alert('Jadwal berhasil ditambahkan.');</script>";
             } else {
-                echo "Error: " . $stmt->error;
+                echo "<script>alert('Error: " . $stmt->error . "');</script>";
             }
-
             $stmt->close();
         }
     } elseif (isset($_POST['edit_schedule'])) {
@@ -65,40 +70,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $jam_selesai = $_POST['jam_selesai'];
         $status = $_POST['status'];
 
-        // Cek apakah dokter lain memiliki jadwal aktif
-        $cek_jadwal_aktif = "SELECT id FROM jadwal_periksa WHERE id_dokter = ? AND status = 'aktif' AND id != ?";
-        $stmt_cek = $conn->prepare($cek_jadwal_aktif);
-        $stmt_cek->bind_param("ii", $id_dokter, $id_jadwal);
-        $stmt_cek->execute();
-        $result_cek = $stmt_cek->get_result();
+        // Cek apakah dokter sudah memiliki jadwal aktif, kecuali jadwal yang sedang diedit
+        if ($status === 'aktif') {
+            $cek_aktif = "SELECT id FROM jadwal_periksa WHERE id_dokter = ? AND status = 'aktif' AND id != ?";
+            $stmt_cek_aktif = $conn->prepare($cek_aktif);
+            $stmt_cek_aktif->bind_param("ii", $id_dokter, $id_jadwal);
+            $stmt_cek_aktif->execute();
+            $result_aktif = $stmt_cek_aktif->get_result();
 
-        if ($result_cek->num_rows > 0 && $status === 'aktif') {
-            echo "Hanya satu jadwal yang bisa memiliki status 'aktif'.";
-        } elseif (strtotime($jam_mulai) >= strtotime($jam_selesai)) {
-            echo "Jam mulai harus lebih awal daripada jam selesai.";
-        } else {
-            // Jika status bukan 'aktif', pastikan jadwal lain dengan status aktif dihapus atau diperbarui ke tidak aktif
-            if ($status !== 'aktif') {
-                $update_status_lain = "UPDATE jadwal_periksa SET status = 'tidak aktif' WHERE id_dokter = ? AND id != ?";
-                $stmt_update = $conn->prepare($update_status_lain);
-                $stmt_update->bind_param("ii", $id_dokter, $id_jadwal);
-                $stmt_update->execute();
+            if ($result_aktif->num_rows > 0) {
+                echo "<script>alert('Dokter hanya bisa memiliki satu jadwal aktif.');</script>";
+                echo "<script>window.location.href='dokter_jadwal_periksa.php';</script>";
+                exit;
             }
-            
+        }
+
+        // Cek apakah hari sudah digunakan oleh dokter, kecuali jadwal yang sedang diedit
+        $cek_hari = "SELECT id FROM jadwal_periksa WHERE id_dokter = ? AND hari = ? AND id != ?";
+        $stmt_cek_hari = $conn->prepare($cek_hari);
+        $stmt_cek_hari->bind_param("isi", $id_dokter, $hari, $id_jadwal);
+        $stmt_cek_hari->execute();
+        $result_hari = $stmt_cek_hari->get_result();
+
+        if ($result_hari->num_rows > 0) {
+            echo "<script>alert('Dokter sudah memiliki jadwal di hari tersebut.');</script>";
+        } elseif (strtotime($jam_mulai) >= strtotime($jam_selesai)) {
+            echo "<script>alert('Jam mulai harus lebih awal daripada jam selesai.');</script>";
+        } else {
             $sql = "UPDATE jadwal_periksa SET hari = ?, jam_mulai = ?, jam_selesai = ?, status = ? WHERE id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ssssi", $hari, $jam_mulai, $jam_selesai, $status, $id_jadwal);
 
             if ($stmt->execute()) {
-                echo "Jadwal berhasil diubah.";
+                echo "<script>alert('Jadwal berhasil diubah.');</script>";
             } else {
-                echo "Error: " . $stmt->error;
+                echo "<script>alert('Error: " . $stmt->error . "');</script>";
             }
-
             $stmt->close();
         }
     }
-    header("Location: dokter_jadwal_periksa.php");
+    echo "<script>window.location.href='dokter_jadwal_periksa.php';</script>";
     exit;
 }
 
@@ -111,11 +122,10 @@ if (isset($_GET['delete_schedule'])) {
     $stmt->bind_param("i", $id_jadwal);
 
     if ($stmt->execute()) {
-        echo "Jadwal berhasil dihapus.";
+        echo "<script>alert('Jadwal berhasil dihapus.');</script>";
     } else {
-        echo "Error: " . $stmt->error;
+        echo "<script>alert('Error: " . $stmt->error . "');</script>";
     }
-
     $stmt->close();
 }
 
@@ -133,8 +143,9 @@ if (isset($_GET['edit_schedule'])) {
     }
     $stmt_edit->close();
 }
-
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -154,18 +165,18 @@ if (isset($_GET['edit_schedule'])) {
         <!-- Sidebar -->
         <div class="bg-white" id="sidebar-wrapper">
             <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
-                    class="fas fa-user-secret me-2"></i>POLIKLINIK</div>
+                    class="fas fas fa-clinic-medical me-2"></i>POLIKLINIK</div>
             <div class="list-group list-group-flush my-3">
                 <a href="dokter_dashboard.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
                 <a href="dokter_jadwal_periksa.php" class="list-group-item list-group-item-action bg-transparent second-text active"><i
-                        class="fas fa-paperclip me-2"></i>Jadwal Periksa</a>
+                        class="fas fa-calendar-alt me-2"></i>Jadwal Periksa</a>
                 <a href="dokter_memeriksa.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Memeriksa Pasien</a>
+                        class="fas fa-user-md me-2"></i>Memeriksa Pasien</a>
                 <a href="dokter_riwayat_pasien.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Riwayat Pasien</a>
+                        class="fas fa-file-medical me-2"></i>Riwayat Pasien</a>
                 <a href="dokter_profil.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Profil</a>
+                        class="fas fa-user me-2"></i>Profil</a>
                 <a href="logout.php" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>
             </div>
