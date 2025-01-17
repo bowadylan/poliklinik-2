@@ -69,7 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Terjadi kesalahan saat memperbarui status: " . $conn->error);
     }
 
-    header("Location: dokter_memeriksa.php");
+    echo "<script>
+            alert('Pemeriksaan pasien berhasil dilakukan.');
+            window.location.href = 'dokter_memeriksa.php';
+          </script>";
     exit;
 }
 ?>
@@ -93,18 +96,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Sidebar -->
         <div class="bg-white" id="sidebar-wrapper">
             <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
-                    class="fas fa-user-secret me-2"></i>POLIKLINIK</div>
+                    class="fas fas fa-clinic-medical me-2"></i>POLIKLINIK</div>
             <div class="list-group list-group-flush my-3">
                 <a href="dokter_dashboard.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
                 <a href="dokter_jadwal_periksa.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Jadwal Periksa</a>
+                        class="fas fa-calendar-alt me-2"></i>Jadwal Periksa</a>
                 <a href="dokter_memeriksa.php" class="list-group-item list-group-item-action bg-transparent second-text active"><i
-                        class="fas fa-paperclip me-2"></i>Memeriksa Pasien</a>
+                        class="fas fa-user-md me-2"></i>Memeriksa Pasien</a>
                 <a href="dokter_riwayat_pasien.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Riwayat Pasien</a>
+                        class="fas fa-file-medical me-2"></i>Riwayat Pasien</a>
                 <a href="dokter_profil.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Profil</a>
+                        class="fas fa-user me-2"></i>Profil</a>
                 <a href="logout.php" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>
             </div>
