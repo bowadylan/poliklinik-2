@@ -32,10 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $update_query->bind_param("ssii", $nama_obat, $kemasan, $harga, $id);
 
             if ($update_query->execute()) {
-                header("Location: admin_obat.php");
+                echo "<script>alert('Data berhasil diubah!'); window.location.href = 'admin_obat.php';</script>";
                 exit;
             } else {
-                die("Error pada update query: " . $conn->error);
+                echo "<script>alert('Error pada update data: " . $conn->error . "');</script>";
             }
         } else {
             // Proses tambah
@@ -43,10 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $insert_query->bind_param("ssi", $nama_obat, $kemasan, $harga);
 
             if ($insert_query->execute()) {
-                header("Location: admin_obat.php");
+                echo "<script>alert('Data berhasil ditambahkan!'); window.location.href = 'admin_obat.php';</script>";
                 exit;
             } else {
-                die("Error pada insert query: " . $conn->error);
+                echo "<script>alert('Error pada insert data: " . $conn->error . "');</script>";
             }
         }
     }
@@ -59,10 +59,10 @@ if (isset($_GET['hapus'])) {
     $delete_query->bind_param("i", $id);
 
     if ($delete_query->execute()) {
-        header("Location: admin_obat.php");
+        echo "<script>alert('Data berhasil dihapus!'); window.location.href = 'admin_obat.php';</script>";
         exit;
     } else {
-        die("Error pada delete query: " . $conn->error);
+        echo "<script>alert('Error pada delete data: " . $conn->error . "');</script>";
     }
 }
 
