@@ -1,9 +1,8 @@
 <?php
-session_start(); // Mulai sesi
+session_start(); 
 
-// Hancurkan semua sesi yang ada
 session_unset();  // Menghapus semua data sesi
-session_destroy(); // Menghancurkan sesi
+session_destroy();
 
 // Redirect ke halaman login setelah logout
 header("Location: login.php");
