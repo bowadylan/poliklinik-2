@@ -166,6 +166,5 @@ $result_pasien_terbaru = $conn->query("SELECT * FROM pasien ORDER BY id DESC LIM
 </html>
 
 <?php
-// Tutup koneksi
 $conn->close();
 ?>
