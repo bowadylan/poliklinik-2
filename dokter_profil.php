@@ -8,7 +8,6 @@ if (!isset($_SESSION['id_dokter'])) {
 
 $id_dokter = $_SESSION['id_dokter'];
 
-
 // Ambil data dokter berdasarkan ID
 $sql = "SELECT * FROM dokter WHERE id = ?";
 $stmt = $conn->prepare($sql);
@@ -35,7 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Validasi input (bisa ditambah sesuai kebutuhan)
     if (empty($nama) || empty($no_hp) || empty($id_poli)) {
-        $error = "Semua field yang bertanda * harus diisi.";
+        echo "<script>
+                alert('Semua field yang bertanda * harus diisi.');
+                window.location.href = 'dokter_profil.php';
+              </script>";
     } else {
         // Update data dokter
         $sql_update = "UPDATE dokter SET nama = ?, alamat = ?, no_hp = ?, id_poli = ? WHERE id = ?";
@@ -43,12 +45,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt_update->bind_param('ssiii', $nama, $alamat, $no_hp, $id_poli, $id_dokter);
 
         if ($stmt_update->execute()) {
-            $success = "Profil berhasil diperbarui.";
             // Refresh data dokter setelah update
             $stmt->execute();
             $dokter = $stmt->get_result()->fetch_assoc();
+            echo "<script>
+                    alert('Profil berhasil diperbarui.');
+                    window.location.href = 'dokter_profil.php'; // Halaman tujuan setelah sukses
+                  </script>";
         } else {
-            $error = "Gagal memperbarui profil: " . $conn->error;
+            echo "<script>
+                    alert('Gagal memperbarui profil:');
+                    window.location.href = 'dokter_profil.php'; // Halaman tujuan jika ada kesalahan
+                  </script>";
         }
     }
 }
@@ -74,18 +82,18 @@ $conn->close();
         <!-- Sidebar -->
         <div class="bg-white" id="sidebar-wrapper">
             <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
-                    class="fas fa-user-secret me-2"></i>POLIKLINIK</div>
+                    class="fas fas fa-clinic-medical me-2"></i>POLIKLINIK</div>
             <div class="list-group list-group-flush my-3">
                 <a href="dokter_dashboard.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
                 <a href="dokter_jadwal_periksa.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Jadwal Periksa</a>
+                        class="fas fa-calendar-alt me-2"></i>Jadwal Periksa</a>
                 <a href="dokter_memeriksa.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Memeriksa Pasien</a>
+                        class="fas fa-user-md me-2"></i>Memeriksa Pasien</a>
                 <a href="dokter_riwayat_pasien.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-paperclip me-2"></i>Riwayat Pasien</a>
+                        class="fas fa-file-medical me-2"></i>Riwayat Pasien</a>
                 <a href="dokter_profil.php" class="list-group-item list-group-item-action bg-transparent second-text active"><i
-                        class="fas fa-paperclip me-2"></i>Profil</a>
+                        class="fas fa-user me-2"></i>Profil</a>
                 <a href="logout.php" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>
             </div>
