@@ -45,13 +45,16 @@ $result_obat_terbaru = $conn->query("SELECT * FROM obat ORDER BY id DESC LIMIT 1
         <!-- Sidebar -->
         <div class="bg-white" id="sidebar-wrapper">
             <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
-                    class="fas fa-user-secret me-2"></i>POLIKLINIK</div>
+                    class="fas fa-clinic-medical me-2"></i>POLIKLINIK</div>
             <div class="list-group list-group-flush my-3">
                 <a href="pasien_dashboard.php" class="list-group-item list-group-item-action bg-transparent second-text active">
                     <i class="fas fa-tachometer-alt me-2"></i>Dashboard
                 </a>
                 <a href="pasien_poli.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                    <i class="fas fa-paperclip me-2"></i>Poli
+                    <i class="fas fa-hospital me-2"></i>Poli
+                </a>
+                <a href="pasien_profil.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                        <i class="fas fa-user me-2"></i>Profil
                 </a>
                 <a href="logout.php" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold">
                     <i class="fas fa-power-off me-2"></i>Logout
@@ -160,6 +163,5 @@ $result_obat_terbaru = $conn->query("SELECT * FROM obat ORDER BY id DESC LIMIT 1
 </html>
 
 <?php
-// Tutup koneksi
 $conn->close();
 ?>
