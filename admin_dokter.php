@@ -43,10 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $update_query->bind_param("sssii", $nama, $alamat, $no_hp, $id_poli, $id);
 
             if ($update_query->execute()) {
-                header("Location: admin_dokter.php"); 
+                echo "<script>alert('Data dokter berhasil diperbarui!'); window.location.href='admin_dokter.php';</script>";
                 exit;
             } else {
-                die("Error pada update query: " . $conn->error);
+                echo "<script>alert('Gagal memperbarui data dokter!');</script>";
             }
         } else {
             // Proses tambah
@@ -54,10 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $insert_query->bind_param("sssi", $nama, $alamat, $no_hp, $id_poli);
 
             if ($insert_query->execute()) {
-                header("Location: admin_dokter.php");
+                echo "<script>alert('Data dokter berhasil ditambahkan!'); window.location.href='admin_dokter.php';</script>";
                 exit;
             } else {
-                die("Error pada insert query: " . $conn->error);
+                echo "<script>alert('Gagal menambahkan data dokter!');</script>";
             }
         }
     }
@@ -70,10 +70,10 @@ if (isset($_GET['hapus'])) {
     $delete_query->bind_param("i", $id);
 
     if ($delete_query->execute()) {
-        header("Location: admin_dokter.php"); 
+        echo "<script>alert('Data dokter berhasil dihapus!'); window.location.href='admin_dokter.php';</script>";
         exit;
     } else {
-        die("Error pada delete query: " . $conn->error);
+        echo "<script>alert('Gagal menghapus data dokter!');</script>";
     }
 }
 
