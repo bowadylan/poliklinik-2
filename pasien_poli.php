@@ -82,14 +82,17 @@ $result_riwayat = $stmt->get_result();
         <!-- Sidebar -->
         <div class="bg-white" id="sidebar-wrapper">
             <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">
-                <i class="fas fa-user-secret me-2"></i>POLIKLINIK
+                <i class="fas fa-clinic-medical me-2"></i>POLIKLINIK
             </div>
             <div class="list-group list-group-flush my-3">
                 <a href="pasien_dashboard.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                     <i class="fas fa-tachometer-alt me-2"></i>Dashboard
                 </a>
                 <a href="pasien_poli.php" class="list-group-item list-group-item-action bg-transparent second-text active">
-                    <i class="fas fa-paperclip me-2"></i>Poli
+                    <i class="fas fa-hospital me-2"></i>Poli
+                </a>
+                <a href="pasien_profil.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                        <i class="fas fa-user me-2"></i>Profil
                 </a>
                 <a href="logout.php" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold">
                     <i class="fas fa-power-off me-2"></i>Logout
@@ -102,7 +105,7 @@ $result_riwayat = $stmt->get_result();
             <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
                 <div class="d-flex align-items-center">
                     <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
-                    <h2 class="fs-2 m-0">Jadwal Periksa</h2>
+                    <h2 class="fs-2 m-0">Poli</h2>
                 </div>
             </nav>
 
