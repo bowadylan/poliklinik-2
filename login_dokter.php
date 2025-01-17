@@ -5,10 +5,10 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama = $conn->real_escape_string($_POST['nama']);
-    $no_hp = $conn->real_escape_string($_POST['no_hp']);
+    $password = $conn->real_escape_string($_POST['password']);
 
     // Query untuk memeriksa nama dan no_hp
-    $sql = "SELECT * FROM dokter WHERE nama = '$nama' AND no_hp = '$no_hp'";
+    $sql = "SELECT * FROM dokter WHERE nama = '$nama' AND no_hp = '$password'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -70,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </div>
 
                                         <div class="form-outline mb-4">
-                                            <input type="text" id="no_hp" name="no_hp" class="form-control form-control-lg" required />
-                                            <label class="form-label" for="no_hp">Nomor HP</label>
+                                            <input type="password" id="password" name="password" class="form-control form-control-lg" required />
+                                            <label class="form-label" for="password">Password</label>
                                         </div>
 
                                         <div class="pt-1 mb-4">
