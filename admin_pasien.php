@@ -28,6 +28,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $no_ktp = $_POST['no_ktp'];
     $no_hp = $_POST['no_hp'];
     $no_rm = $_POST['no_rm'];
+    
+    // Cek apakah pasien sudah terdaftar berdasarkan nomor KTP
+    $stmt = $conn->prepare("SELECT * FROM pasien WHERE no_ktp = ?");
+    $stmt->bind_param("i", $no_ktp);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        echo "<script>
+            alert('Pasien dengan nomor KTP ini sudah terdaftar!');
+            window.location.href = 'admin_pasien.php';
+        </script>";
+        $stmt->close();
+        $conn->close();
+        exit;
+    }
 
     if (isset($_POST['simpan'])) {
         if ($id) {
@@ -36,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $update_query->bind_param("sssssi", $nama, $alamat, $no_ktp, $no_hp, $no_rm, $id);
 
             if ($update_query->execute()) {
-                header("Location: admin_pasien.php");
+                echo "<script>alert('Data pasien berhasil diperbarui!'); window.location.href = 'admin_pasien.php';</script>";
                 exit;
             } else {
                 die("Error pada update query: " . $conn->error);
@@ -47,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $insert_query->bind_param("sssss", $nama, $alamat, $no_ktp, $no_hp, $no_rm);
 
             if ($insert_query->execute()) {
-                header("Location: admin_pasien.php"); 
+                echo "<script>alert('Pasien berhasil ditambahkan!'); window.location.href = 'admin_pasien.php';</script>";
                 exit;
             } else {
                 die("Error pada insert query: " . $conn->error);
@@ -63,7 +79,7 @@ if (isset($_GET['hapus'])) {
     $delete_query->bind_param("i", $id);
 
     if ($delete_query->execute()) {
-        header("Location: admin_pasien.php");
+        echo "<script>alert('Pasien berhasil dihapus!'); window.location.href = 'admin_pasien.php';</script>";
         exit;
     } else {
         die("Error pada delete query: " . $conn->error);
@@ -87,6 +103,7 @@ if (isset($_GET['edit'])) {
         $is_edit = true;
     }
 }
+
 // Generate No Rekam Medis otomatis jika form tambah
 if (!$is_edit) {
     $year_month = date('Ym'); // Tahun dan bulan, contoh: 202412
