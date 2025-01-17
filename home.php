@@ -7,104 +7,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fc;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background: #78c2a4;
-            color: white;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        header h1 {
-            font-size: 2.5rem;
-            margin: 0;
-            margin-left: 20px;
-            font-weight: bolder;
-        }
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.2);
-        }
-        .card-header {
-            background-color: #78c2a4;
-            color: white;
-            font-size: 1.4rem;
-            font-weight: bold;
-            text-align: center;
-            padding: 15px 0;
-        }
-        .icon-box {
-            text-align: center;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            background: #fff;
-            transition: all 0.3s ease-in-out;
-            height: 200px; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .icon-box h4 {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        .icon-box i {
-            font-size: 2.5rem;
-            color: #78c2a4;
-            margin-bottom: 10px;
-        }
-        .icon-box:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-        .description {
-            font-size: 0.9rem;
-            color: #555;
-            margin-top: 10px;
-            text-align: center;
-        }
-        .btn-custom {
-            background-color: #78c2a4;
-            color: white;
-            border-radius: 25px;
-            padding: 10px 30px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        .btn-custom:hover {
-            background-color: #5da48a;
-            transform: scale(1.05);
-        }
-        .footer {
-            background-color: #78c2a4;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="home.css" />
 </head>
 <body>
     <!-- Header -->
     <header>
         <h1>POLIKLINIK</h1>
     </header>
-
     <!-- isi -->
     <div class="container my-5">
         <div class="row justify-content-center">
