@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Sidebar -->
         <div class="bg-white" id="sidebar-wrapper">
             <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">
-                <i class="fas fa-user-secret me-2"></i>POLIKLINIK
+                <i class="fas fas fa-clinic-medical me-2"></i>POLIKLINIK
             </div>
             <div class="list-group list-group-flush my-3">
             <a href="dokter_dashboard.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
